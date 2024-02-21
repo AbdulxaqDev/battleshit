@@ -1,7 +1,7 @@
 {
   "name": "battleship",
   "version": "1.0.0",
-  "description": "",
+  "description": "websocket based battleship game",
   "main": "index.js",
   "scripts": {
     "start:client:dev": "npm run start:dev --prefix client",
