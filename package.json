@@ -1,0 +1,17 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:client:dev": "npm run start:dev --prefix client",
+    "start:server:dev": "npm run start:dev --prefix server",
+    "start:client:prod": "npm start --prefix client",
+    "start:server:prod": "npm run start:dev --prefix server",
+    "start:dev": "npm run start:server:dev & npm run start:client:dev",
+    "start": "npm run start:server:prod & npm run start:client:prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
