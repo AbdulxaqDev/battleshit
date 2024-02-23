@@ -1,4 +1,5 @@
 import { WebSocketServer } from "ws";
+import { playerDataToJSON, register } from "./utils/login.util";
 
 const PORT = 3000;
 
@@ -10,4 +11,14 @@ wss.on("listening", () => {
 
 wss.on("connection", (ws) => {
   ws.on("error", console.error);
+
+  ws.on("message", (data) => {
+    const player = playerDataToJSON(data.toString());
+
+    if (player.type === "reg") {
+      const registered = register(player);
+      ws.send(registered);
+    }
+    
+  });
 });
