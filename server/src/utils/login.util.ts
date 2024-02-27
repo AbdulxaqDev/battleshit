@@ -1,63 +1,25 @@
-import { addPlayer, checkUser } from "src/helpers/helpers";
+import { WebSocket } from "ws";
+
 import { tPlayer } from "src/types/types";
-import { v4 as uuidv4 } from "uuid";
+import { createPlayer, removePassword } from "./player.util";
+import { addPlayer, isPlayerExist } from "src/helpers/helpers";
 
-export function playerDataToStr(player: tPlayer): string {
-  const stringData = {
-    ...player,
-    data: JSON.stringify(player.data),
-  };
-  return JSON.stringify(stringData);
-}
-
-export function playerDataToJSON(player: string) {
-  const rawPlayer = JSON.parse(player.toString());
-
-  return {
-    ...rawPlayer,
-    data: JSON.parse(rawPlayer.data),
-  };
-}
-
-export function register(player: tPlayer): string {
-  const isExist = checkUser(player);
+export function register(ws: WebSocket, data: tPlayer): tPlayer {
+  const isExist = isPlayerExist(ws);
   if (isExist) {
-    const { name, index, error, errorText } = isExist.data;
-    return playerDataToStr({
-      ...isExist,
-      data: {
-        name,
-        index,
-        error,
-        errorText,
-      },
-    });
+    const { name, index, error, errorText } = isExist;
+    return {
+      name,
+      index,
+      error,
+      errorText,
+    };
   } else {
-    const { name, password } = player.data;
+    const newPlayer = createPlayer(ws, data);
+    const registered = removePassword(data);
 
-    const newPlayerWithPassword = {
-      ...player,
-      data: {
-        name,
-        password,
-        index: uuidv4(),
-        error: false,
-        errorText: "noError",
-      },
-    };
+    addPlayer(newPlayer);
 
-    const newPlayerWithoutPassword = {
-      ...player,
-      data: {
-        name,
-        index: uuidv4(),
-        error: false,
-        errorText: "noError",
-      },
-    };
-
-    addPlayer(newPlayerWithPassword);
-
-    return playerDataToStr(newPlayerWithoutPassword);
+    return registered;
   }
 }
