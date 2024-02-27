@@ -1,3 +1,5 @@
-import { tPlayer } from "src/types/types";
+import { tPlayer, tRoom } from "src/types/types";
 
 export const playersDB: tPlayer[] = [];
+
+export const roomsDB: tRoom[] = [];
