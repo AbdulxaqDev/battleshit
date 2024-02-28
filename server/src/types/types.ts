@@ -33,3 +33,24 @@ export type tGame = {
 };
 
 export type tRooms = tRoom[] | string;
+
+export type tShip = {
+  position: {
+    x: number;
+    y: number;
+  };
+  direction: boolean;
+  type: string;
+  length: number;
+};
+
+export type tPlayersShips = {
+  gameId: string;
+  ships: tShip[];
+  indexPlayer: number | string;
+};
+
+export type tWinner = {
+  name: string;
+  wins: number;
+};
