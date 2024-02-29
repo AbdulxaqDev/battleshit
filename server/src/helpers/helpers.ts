@@ -1,7 +1,15 @@
 import { RawData, WebSocket } from "ws";
 
 import { playersDB, roomsDB } from "src/db/db";
-import { tDefault, tPlayer, tRoom, tGame } from "src/types/types";
+import {
+  tDefault,
+  tPlayer,
+  tRoom,
+  tGame,
+  tWinner,
+  tPlayersShips,
+  tPlayerShips,
+} from "src/types/types";
 
 export function isPlayerExist(ws: WebSocket) {
   return playersDB.find((p) => p.ws === ws);
@@ -32,7 +40,14 @@ export function request(DATA: RawData) {
 }
 
 export function response(
-  DATA: tPlayer | tRoom | tRoom[] | tGame,
+  DATA:
+    | tPlayer
+    | tRoom
+    | tRoom[]
+    | tGame
+    | tWinner[]
+    | tPlayersShips
+    | tPlayerShips,
   type: string
 ): string {
   const stringData = {
