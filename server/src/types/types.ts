@@ -44,10 +44,26 @@ export type tShip = {
   length: number;
 };
 
-export type tPlayersShips = {
+export type tIncomingPlayerShips = {
   gameId: string;
   ships: tShip[];
   indexPlayer: number | string;
+};
+
+export type tSinglePlayerShips = {
+  ships: tShip[];
+  indexPlayer: number | string;
+  ws: WebSocket;
+};
+
+export type tPlayerShips = {
+  ships: tShip[];
+  currentPlayerIndex: string | number;
+};
+
+export type tPlayersShips = {
+  gameId: string;
+  players: tSinglePlayerShips[];
 };
 
 export type tWinner = {
