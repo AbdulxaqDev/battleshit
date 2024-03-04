@@ -5,9 +5,10 @@ import { tRoom } from "src/types/types";
 import { playersDB, roomsDB } from "src/db/db";
 
 export function createRoom(ws: WebSocket, room: tRoom): tRoom {
+  const roomId = uuidv4();
   const newRoom: tRoom = {
     ws: ws,
-    roomId: uuidv4(),
+    roomId,
     roomUsers: [],
   };
 
@@ -16,24 +17,29 @@ export function createRoom(ws: WebSocket, room: tRoom): tRoom {
   return newRoom;
 }
 
-export function addPlayerToRoom(ws: WebSocket, roomIndex: string = ""): void {
+export function addPlayerToRoom(
+  ws: WebSocket,
+  roomIndex: string | number
+): void {
   const player = playersDB.find((player) => player.ws === ws);
   if (!player) return;
 
   const { name, index } = player;
-  let room;
-  if (ws && !roomIndex) {
-    room = roomsDB.find((room) => room.ws === ws);
-  } else {
-    room = roomsDB.find((room) => room.roomId === roomIndex);
-  }
 
-  room?.roomUsers.push({ name, index, ws });
+  let room = roomsDB.find((room) => room.roomId === roomIndex);
+  let isPlayerInRoom = room?.roomUsers.find((u) => u.index === index);
+
+  if (isPlayerInRoom) {
+    console.log("\x1b[31m%s\x1b[0m", "User is already in room");
+  } else {
+    console.log("\x1b[32m%s\x1b[0m", "Adding player to room!");
+    room?.roomUsers.push({ name, index, ws });
+  }
 }
 
 export function removeFullRoom(roomIndex: string) {
   roomsDB.map((room) => {
-    if (room.roomId === roomIndex) {
+    if (room.roomId === roomIndex && room.roomUsers.length === 2) {
       roomsDB.splice(roomsDB.indexOf(room), 1);
     }
   });
