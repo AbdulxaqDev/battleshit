@@ -9,6 +9,8 @@ import {
   updateWinnersReqeuest,
   addShipsRequest,
   startGameRequest,
+  turnRequest,
+  attackRequest,
 } from "./requests/requests";
 import { roomsDB } from "./db/db";
 import { removeFullRoom } from "./utils/room.util";
@@ -42,15 +44,16 @@ wss.on("connection", (ws) => {
         const roomIndex = data.indexRoom;
         addUserToRoomRequest(ws, roomIndex); /* => */
         updateRoomRequest(ws, roomIndex); /* => */
-        createGameRequest(ws); /* => */
+        createGameRequest(roomIndex); /* => */
         removeFullRoom(roomIndex); /* in server */
         break;
       case "add_ships":
         addShipsRequest(ws, data);
         startGameRequest(data.gameId);
         break;
-      // case "start_game":
-      //   break;
+      case "attack":
+        attackRequest(data);
+        break;
       default:
         break;
     }
