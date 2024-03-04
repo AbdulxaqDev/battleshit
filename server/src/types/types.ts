@@ -42,6 +42,15 @@ export type tShip = {
   direction: boolean;
   type: string;
   length: number;
+  life?: number;
+  shipAroundCoords: {
+    x: number;
+    y: number;
+  }[];
+  shipCoords: {
+    x: number;
+    y: number;
+  }[];
 };
 
 export type tIncomingPlayerShips = {
@@ -54,6 +63,7 @@ export type tSinglePlayerShips = {
   ships: tShip[];
   indexPlayer: number | string;
   ws: WebSocket;
+  life?: number;
 };
 
 export type tPlayerShips = {
@@ -67,6 +77,22 @@ export type tPlayersShips = {
 };
 
 export type tWinner = {
-  name: string;
+  name: string | undefined;
   wins: number;
+};
+
+export type tAttack = {
+  gameId: number | string;
+  x: number;
+  y: number;
+  indexPlayer: number | string;
+};
+
+export type tAttackFeedback = {
+  position: {
+    x: number;
+    y: number;
+  };
+  currentPlayer: number | string;
+  status: string; // "miss"|"killed"|"shot"
 };
